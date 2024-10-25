@@ -220,7 +220,7 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             dof_vel_limits = -0.
             torque_limits = -0.   # -7e-2
             move_feet_up = -5
-            stumble_up = -3                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0       
+            stumble_up = -3                                     # -0.5, -0.3, -0.8 -0.1 -1.0       
             # from locomotion
             # foot_clearance_up =  -0.5    #-0.5
             # foot_mirror_up = -0.005
