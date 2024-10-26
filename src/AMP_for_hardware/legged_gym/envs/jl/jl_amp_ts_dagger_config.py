@@ -106,7 +106,7 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         name = "jl"
         foot_name = "foot"
         penalize_contacts_on = ["base", "thigh", "calf"]
-        terminate_after_contacts_on = []#["base", "thigh"]
+        terminate_after_contacts_on = ["base", "thigh"]
         self_collisions = 1                                     # 1 to disable, 0 to enable...bitwise filter
         flip_visual_attachments = False
         fix_base_link = False
@@ -194,37 +194,34 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         base_height_target = 0.25                              # 换urdf记得改!!!!
         toe_height_target = 0.1                                # 换urdf记得改!!!! 0.08 0.10 0.12
         class scales( LeggedRobotCfg.rewards.scales ):     
-            upward = 0.5
-            foot_slide_up = -0.05
-            stand_nice = -0.1
             termination = -0.0
             tracking_lin_vel = 1.2
             tracking_ang_vel = 0.5
-            lin_vel_z_up = -4
-            ang_vel_xy_up = -0.25
-            orientation_up = -1.5                                 # -0.2
-            collision_up = -1.                                    # -0.1 -0.2 
-            base_height_up = -0.15                                 # -100, -80 -0.2 
-            feet_collision_onstair_up = -0.2                       # -0.1
-            foot_clearance_up = 0.15                              # -0.5 -1.0 -2.0 -1.0 -5.
+            lin_vel_z = -4
+            ang_vel_xy = -0.25
+            orientation = -1.5                                 # -0.2
+            collision = -1.                                    # -0.1 -0.2 
+            base_height = -0.15                                 # -100, -80 -0.2 
+            feet_collision_onstair = -0.2                       # -0.1
+            foot_clearance = 0.15                              # -0.5 -1.0 -2.0 -1.0 -5.
             foot_discrepancy = 0
-            feet_air_time_up = 1.5                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
+            feet_air_time = 1.5                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
             stand_still = -1
-            hip_pos_limits_up = -0.2
+            hip_pos_limits = -0.2
             torques = -7e-4                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
             dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
-            base_acc_up = -0.15
+            base_acc = -0.15
             action_rate = -0.02                                 # -0.15  -0.1      smooth_scale
             dof_vel = -2.5e-4
             dof_pos_limits = -5.
             dof_vel_limits = -0.
             torque_limits = -0.   # -7e-2
-            move_feet_up = -5
-            stumble_up = -3                                     # -0.5, -0.3, -0.8 -0.1 -1.0       
+            move_feet = -5
+            stumble = -3                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0       
             # from locomotion
             # foot_clearance_up =  -0.5    #-0.5
             # foot_mirror_up = -0.005
-            hip_pos_up = -0.05
+            hip_pos = -0.05
             smoothness = -0.01
             # joint_power = -2e-5
 
@@ -286,7 +283,7 @@ class JLAMPTSDAggerCfgPPO( LeggedRobotCfgPPO ):
         num_proprio_obs = JLAMPTSDAggerCfg.env.num_proprio_obs
         num_privileged_obs = JLAMPTSDAggerCfg.env.num_privileged_obs
         num_terrain_obs = JLAMPTSDAggerCfg.env.num_terrain_obs
-        amp_loss_coef = 0#1                    # 1.4
+        amp_loss_coef = 1                    # 1.4
 
     class policy( LeggedRobotCfgPPO.policy ):
         tanh_actor_output = False
@@ -309,7 +306,7 @@ class JLAMPTSDAggerCfgPPO( LeggedRobotCfgPPO ):
         policy_class_name = 'ActorCritic'
         max_iterations = 500000                             # number of policy updates
         max_collecting_iterations = 1000
-        amp_reward_coef =  0.#1.0                           # 1.0 2.0 1.5 0.5 1.3
+        amp_reward_coef =  1.0                           # 1.0 2.0 1.5 0.5 1.3
         amp_motion_files = MOTION_FILES
         amp_num_preload_transitions = 2000000
         amp_task_reward_lerp = 0.0
