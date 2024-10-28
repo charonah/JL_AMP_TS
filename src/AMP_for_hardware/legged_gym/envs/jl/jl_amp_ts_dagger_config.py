@@ -95,7 +95,7 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         terrain_width = 8.
         platform = 3.
         # terrain types: [rough_flat, slope, stairs up, stairs down, discrete, wave]
-        terrain_proportions = [0.2, 0.2, 0.3, 0.3]          # 切记第一个是rough_flat
+        terrain_proportions = [0.5, 0.5, 0., 0.]          # 切记第一个是rough_flat
         # terrain_proportions = [0.0, 0.0, 1.0, 0.0]          # play_test
         terrain_name = 0                                        # 0: normal_small ,1: range_stepwidth_small
         step_width = 0.25                                       # step width for the stairs
