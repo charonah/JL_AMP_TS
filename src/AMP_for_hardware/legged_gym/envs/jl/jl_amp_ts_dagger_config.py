@@ -102,7 +102,7 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         slope_treshold = 0.4 # slopes above this threshold will be corrected to vertical surfaces
 
     class asset( LeggedRobotCfg.asset ):
-        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl/urdf/jl.urdf"
+        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/xxgo/urdf/xxgo.urdf"
         name = "jl"
         foot_name = "foot"
         penalize_contacts_on = ["base", "thigh", "calf"]

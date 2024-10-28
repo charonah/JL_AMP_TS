@@ -31,11 +31,166 @@
   <material name="white">
     <color rgba="1.0 1.0 1.0 1.0"/>
   </material>
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin filename="liblegged_hw_sim.so" name="gazebo_ros_control">
+      <robotNamespace>/</robotNamespace>
+      <robotParam>legged_robot_description</robotParam>
+      <robotSimType>legged_gazebo/LeggedHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1000.0</updateRate>
+      <bodyName>base</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+  <gazebo reference="base_link">
+    <maxVel>100.</maxVel>
+    <kp>10000.</kp>
+    <kd>0.</kd>
+  </gazebo>
+  <gazebo reference="stick_link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+  <!-- LF leg -->
+  <gazebo reference="LF_hip">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="LF_thigh">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <gazebo reference="LF_calf">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+  </gazebo>
+  <gazebo reference="LF_FOOT">
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+  </gazebo>
+  <!-- RF leg -->
+  <gazebo reference="RF_hip">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="RF_thigh">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <gazebo reference="RF_calf">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+  </gazebo>
+  <gazebo reference="RF_FOOT">
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <!-- LH leg -->
+  <gazebo reference="LH_hip">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="LH_thigh">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <gazebo reference="LH_calf">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+  </gazebo>
+  <gazebo reference="LH_FOOT">
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <!-- RH leg -->
+  <gazebo reference="RH_hip">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="RH_thigh">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <gazebo reference="RH_calf">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+  </gazebo>
+  <gazebo reference="RH_FOOT">
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
+  </gazebo>
+  <!-- <xacro:property name="foot_com_x" value="-0.0042403"/>
+    <xacro:property name="foot_com_y" value="-8.0676E-11"/>
+    <xacro:property name="foot_com_z" value="-0.0056271"/>
+
+    <xacro:property name="foot_ixx" value="1.2054E-06"/>
+    <xacro:property name="foot_ixy" value="-5.2111E-13"/>
+    <xacro:property name="foot_ixz" value="3.5566E-07"/>
+    <xacro:property name="foot_iyy" value="1.5621E-06"/>
+    <xacro:property name="foot_iyz" value="3.996E-13"/>
+    <xacro:property name="foot_izz" value="1.4093E-06"/> -->
+  <!-- <link name="world" />
+
+    <joint name ="weld" type="fixed">
+        <parent link="world"/>
+        <child link="base"/>
+        <origin xyz="0 0 1"/>
+    </joint> -->
   <link name="base">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/trunk.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/trunk.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -74,52 +229,57 @@
       <color rgba="255 108 10 255"/>
     </material>
   </link>
-
-  <joint name="FR_hip_joint" type="revolute">
+  <gazebo reference="base_imu">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+  <gazebo reference="base_imu_joint">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+  <joint name="RF_HAA" type="revolute">
     <origin rpy="0 0 0" xyz="0.1645 -0.05 0.0"/>
     <parent link="base"/>
-    <child link="FR_hip"/>
+    <child link="RF_hip"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-0.45" upper="0.45" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-0.33" upper="0.33" velocity="30.9971"/>
   </joint>
-  <link name="FR_hip">
+  <link name="RF_hip">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <!-- <origin rpy="${pi} 0 0" xyz="0 0 0"/> -->
       <geometry>
-        <mesh filename="../meshes/FR_hip_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_hip_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.032" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00351874 -0.00206525 -0.00048653"/>
       <mass value="0.3531958"/>
       <inertia ixx="0.00014315" ixy="1.5e-07" ixz="-4e-08" iyy="0.00026346" iyz="1.4e-07" izz="0.00017711"/>
     </inertial>
   </link>
-  <joint name="FR_thigh_joint" type="revolute">
+  <joint name="RF_HFE" type="revolute">
     <!-- c -->
     <!-- <origin rpy="0 0 0" xyz="0 ${thigh_offset*mirror} 0"/> -->
     <origin rpy="0 0.0 0" xyz="0 -0.08055 0"/>
-    <parent link="FR_hip"/>
-    <child link="FR_thigh"/>
+    <parent link="RF_hip"/>
+    <child link="RF_thigh"/>
     <!-- <axis xyz="0 -1 0"/> -->
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
     <limit effort="12.0001" lower="-1" upper="1.79" velocity="30.9971"/>
   </joint>
-  <link name="FR_thigh">
+  <link name="RF_thigh">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FR_thigh_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_thigh_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -129,32 +289,32 @@
         <box size="0.12 0.03 0.03"/>
       </geometry>
     </collision>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.035" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00371117 0.01697974 -0.01400046"/>
       <mass value="0.71774765"/>
       <inertia ixx="0.00144898" ixy="-5.716e-05" ixz="-0.00011203" iyy="0.00135146" iyz="-0.00019629" izz="0.00071909"/>
     </inertial>
   </link>
-  <joint name="FR_calf_joint" type="revolute">
+  <joint name="RF_KFE" type="revolute">
     <!-- cc -->
     <origin rpy="0 0 0" xyz="0 0 -0.12"/>
-    <parent link="FR_thigh"/>
-    <child link="FR_calf"/>
+    <parent link="RF_thigh"/>
+    <child link="RF_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
   </joint>
-  <link name="FR_calf">
+  <link name="RF_calf">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FR_calf_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_calf_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -170,12 +330,12 @@
       <inertia ixx="0.0008322" ixy="9e-08" ixz="3.836e-05" iyy="0.00083464" iyz="-2.18e-06" izz="3.316e-05"/>
     </inertial>
   </link>
-  <joint name="FR_foot_fixed" type="fixed" dont_collapse="true">
+  <joint name="RF_foot_fixed" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.16852"/>
-    <parent link="FR_calf"/>
-    <child link="FR_foot"/>
+    <parent link="RF_calf"/>
+    <child link="RF_FOOT"/>
   </joint>
-  <link name="FR_foot">
+  <link name="RF_FOOT">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -192,7 +352,6 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <origin rpy="0 0 0" xyz="3.045e-05 0 -0.00104172"/>
       <inertia ixx="1.0579999999999999e-05" ixy="0.0" ixz="0.0" iyy="1.0579999999999999e-05" iyz="0.0" izz="1.0579999999999999e-05"/>
     </inertial>
     <!-- <inertial>
@@ -211,50 +370,83 @@
                         izz="${foot_izz}"/>
             </inertial> -->
   </link>
-  <joint name="FL_hip_joint" type="revolute">
+  <gazebo reference="RF_foot_fixed">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+  <transmission name="RF_HAA_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RF_HAA">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RF_HAA_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="RF_HFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RF_HFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RF_HFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="RF_KFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RF_KFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RF_KFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <joint name="LF_HAA" type="revolute">
     <origin rpy="0 0 0" xyz="0.1645 0.05 0.0"/>
     <parent link="base"/>
-    <child link="FL_hip"/>
+    <child link="LF_hip"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-0.45" upper="0.45" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-0.33" upper="0.33" velocity="30.9971"/>
   </joint>
-  <link name="FL_hip">
+  <link name="LF_hip">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_hip_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_hip_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.032" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00351874 0.00206525 -0.00048653"/>
       <mass value="0.3531958"/>
       <inertia ixx="0.00014315" ixy="-1.5e-07" ixz="-4e-08" iyy="0.00026346" iyz="-1.4e-07" izz="0.00017711"/>
     </inertial>
   </link>
-  <joint name="FL_thigh_joint" type="revolute">
+  <joint name="LF_HFE" type="revolute">
     <!-- c -->
     <!-- <origin rpy="0 0 0" xyz="0 ${thigh_offset*mirror} 0"/> -->
     <origin rpy="0 0.0 0" xyz="0 0.08055 0"/>
-    <parent link="FL_hip"/>
-    <child link="FL_thigh"/>
+    <parent link="LF_hip"/>
+    <child link="LF_thigh"/>
     <!-- <axis xyz="0 -1 0"/> -->
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
     <limit effort="12.0001" lower="-1" upper="1.79" velocity="30.9971"/>
   </joint>
-  <link name="FL_thigh">
+  <link name="LF_thigh">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_thigh_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_thigh_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -264,32 +456,32 @@
         <box size="0.12 0.03 0.03"/>
       </geometry>
     </collision>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.035" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00371117 -0.01697974 -0.01400046"/>
       <mass value="0.71774765"/>
       <inertia ixx="0.00144898" ixy="5.716e-05" ixz="-0.00011203" iyy="0.00135146" iyz="0.00019629" izz="0.00071909"/>
     </inertial>
   </link>
-  <joint name="FL_calf_joint" type="revolute">
+  <joint name="LF_KFE" type="revolute">
     <!-- cc -->
     <origin rpy="0 0 0" xyz="0 0 -0.12"/>
-    <parent link="FL_thigh"/>
-    <child link="FL_calf"/>
+    <parent link="LF_thigh"/>
+    <child link="LF_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
   </joint>
-  <link name="FL_calf">
+  <link name="LF_calf">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_calf_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_calf_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -305,12 +497,12 @@
       <inertia ixx="0.0008322" ixy="9e-08" ixz="3.836e-05" iyy="0.00083464" iyz="-2.18e-06" izz="3.316e-05"/>
     </inertial>
   </link>
-  <joint name="FL_foot_fixed" type="fixed" dont_collapse="true">
+  <joint name="LF_foot_fixed" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.16852"/>
-    <parent link="FL_calf"/>
-    <child link="FL_foot"/>
+    <parent link="LF_calf"/>
+    <child link="LF_FOOT"/>
   </joint>
-  <link name="FL_foot">
+  <link name="LF_FOOT">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -327,7 +519,6 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <origin rpy="0 0 0" xyz="3.045e-05 0 -0.00104172"/>
       <inertia ixx="1.0579999999999999e-05" ixy="0.0" ixz="0.0" iyy="1.0579999999999999e-05" iyz="0.0" izz="1.0579999999999999e-05"/>
     </inertial>
     <!-- <inertial>
@@ -346,51 +537,83 @@
                         izz="${foot_izz}"/>
             </inertial> -->
   </link>
-
-  <joint name="RR_hip_joint" type="revolute">
+  <gazebo reference="LF_foot_fixed">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+  <transmission name="LF_HAA_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LF_HAA">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LF_HAA_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="LF_HFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LF_HFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LF_HFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="LF_KFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LF_KFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LF_KFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <joint name="RH_HAA" type="revolute">
     <origin rpy="0 0 0" xyz="-0.1645 -0.05 0.0"/>
     <parent link="base"/>
-    <child link="RR_hip"/>
+    <child link="RH_hip"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-0.45" upper="0.45" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-0.33" upper="0.33" velocity="30.9971"/>
   </joint>
-  <link name="RR_hip">
+  <link name="RH_hip">
     <visual>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_hip_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_hip_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.032" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0.00351874 -0.00206525 -0.00048653"/>
       <mass value="0.3531958"/>
       <inertia ixx="0.00014315" ixy="-1.5e-07" ixz="4e-08" iyy="0.00026346" iyz="1.4e-07" izz="0.00017711"/>
     </inertial>
   </link>
-  <joint name="RR_thigh_joint" type="revolute">
+  <joint name="RH_HFE" type="revolute">
     <!-- c -->
     <!-- <origin rpy="0 0 0" xyz="0 ${thigh_offset*mirror} 0"/> -->
     <origin rpy="0 0.0 0" xyz="0 -0.08055 0"/>
-    <parent link="RR_hip"/>
-    <child link="RR_thigh"/>
+    <parent link="RH_hip"/>
+    <child link="RH_thigh"/>
     <!-- <axis xyz="0 -1 0"/> -->
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
     <limit effort="12.0001" lower="-1" upper="1.79" velocity="30.9971"/>
   </joint>
-  <link name="RR_thigh">
+  <link name="RH_thigh">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FR_thigh_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_thigh_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -400,32 +623,32 @@
         <box size="0.12 0.03 0.03"/>
       </geometry>
     </collision>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.035" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00371117 0.01697974 -0.01400046"/>
       <mass value="0.71774765"/>
       <inertia ixx="0.00144898" ixy="-5.716e-05" ixz="-0.00011203" iyy="0.00135146" iyz="-0.00019629" izz="0.00071909"/>
     </inertial>
   </link>
-  <joint name="RR_calf_joint" type="revolute">
+  <joint name="RH_KFE" type="revolute">
     <!-- cc -->
     <origin rpy="0 0 0" xyz="0 0 -0.12"/>
-    <parent link="RR_thigh"/>
-    <child link="RR_calf"/>
+    <parent link="RH_thigh"/>
+    <child link="RH_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
   </joint>
-  <link name="RR_calf">
+  <link name="RH_calf">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FR_calf_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_calf_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -441,12 +664,12 @@
       <inertia ixx="0.0008322" ixy="9e-08" ixz="3.836e-05" iyy="0.00083464" iyz="-2.18e-06" izz="3.316e-05"/>
     </inertial>
   </link>
-  <joint name="RR_foot_fixed" type="fixed" dont_collapse="true">
+  <joint name="RH_foot_fixed" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.16852"/>
-    <parent link="RR_calf"/>
-    <child link="RR_foot"/>
+    <parent link="RH_calf"/>
+    <child link="RH_FOOT"/>
   </joint>
-  <link name="RR_foot">
+  <link name="RH_FOOT">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -463,7 +686,6 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <origin rpy="0 0 0" xyz="3.045e-05 0 -0.00104172"/>
       <inertia ixx="1.0579999999999999e-05" ixy="0.0" ixz="0.0" iyy="1.0579999999999999e-05" iyz="0.0" izz="1.0579999999999999e-05"/>
     </inertial>
     <!-- <inertial>
@@ -482,51 +704,83 @@
                         izz="${foot_izz}"/>
             </inertial> -->
   </link>
-
-  <joint name="RL_hip_joint" type="revolute">
+  <gazebo reference="RH_foot_fixed">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+  <transmission name="RH_HAA_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RH_HAA">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RH_HAA_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="RH_HFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RH_HFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RH_HFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="RH_KFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="RH_KFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="RH_KFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <joint name="LH_HAA" type="revolute">
     <origin rpy="0 0 0" xyz="-0.1645 0.05 0.0"/>
     <parent link="base"/>
-    <child link="RL_hip"/>
+    <child link="LH_hip"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-0.45" upper="0.45" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-0.33" upper="0.33" velocity="30.9971"/>
   </joint>
-  <link name="RL_hip">
+  <link name="LH_hip">
     <visual>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FR_hip_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FR_hip_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.032" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0.00351874 0.00206525 -0.00048653"/>
       <mass value="0.3531958"/>
       <inertia ixx="0.00014315" ixy="1.5e-07" ixz="4e-08" iyy="0.00026346" iyz="-1.4e-07" izz="0.00017711"/>
     </inertial>
   </link>
-  <joint name="RL_thigh_joint" type="revolute">
+  <joint name="LH_HFE" type="revolute">
     <!-- c -->
     <!-- <origin rpy="0 0 0" xyz="0 ${thigh_offset*mirror} 0"/> -->
     <origin rpy="0 0.0 0" xyz="0 0.08055 0"/>
-    <parent link="RL_hip"/>
-    <child link="RL_thigh"/>
+    <parent link="LH_hip"/>
+    <child link="LH_thigh"/>
     <!-- <axis xyz="0 -1 0"/> -->
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
     <limit effort="12.0001" lower="-1" upper="1.79" velocity="30.9971"/>
   </joint>
-  <link name="RL_thigh">
+  <link name="LH_thigh">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_thigh_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_thigh_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -536,32 +790,32 @@
         <box size="0.12 0.03 0.03"/>
       </geometry>
     </collision>
-    <!-- <collision>
+    <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
         <cylinder length="0.035" radius="0.035"/>
       </geometry>
-    </collision> -->
+    </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="-0.00371117 -0.01697974 -0.01400046"/>
       <mass value="0.71774765"/>
       <inertia ixx="0.00144898" ixy="5.716e-05" ixz="-0.00011203" iyy="0.00135146" iyz="0.00019629" izz="0.00071909"/>
     </inertial>
   </link>
-  <joint name="RL_calf_joint" type="revolute">
+  <joint name="LH_KFE" type="revolute">
     <!-- cc -->
     <origin rpy="0 0 0" xyz="0 0 -0.12"/>
-    <parent link="RL_thigh"/>
-    <child link="RL_calf"/>
+    <parent link="LH_thigh"/>
+    <child link="LH_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.2"/>
-    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
   </joint>
-  <link name="RL_calf">
+  <link name="LH_calf">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_calf_link.STL" scale="1 1 1"/>
+        <mesh filename="package://legged_xxgo_description/meshes/xxgo/FL_calf_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -577,17 +831,17 @@
       <inertia ixx="0.0008322" ixy="9e-08" ixz="3.836e-05" iyy="0.00083464" iyz="-2.18e-06" izz="3.316e-05"/>
     </inertial>
   </link>
-  <joint name="RL_foot_fixed" type="fixed" dont_collapse="true">
+  <joint name="LH_foot_fixed" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.16852"/>
-    <parent link="RL_calf"/>
-    <child link="RL_foot"/>
+    <parent link="LH_calf"/>
+    <child link="LH_FOOT"/>
   </joint>
-  <link name="RL_foot">
+  <link name="LH_FOOT">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <sphere radius="0.023"/>
-        <!-- <mesh filename="../meshes/$(arg robot_type)/FL_toe_link.STL" scale="1 1 1"/> -->
+        <!-- <mesh filename="package://legged_xxgo_description/meshes/$(arg robot_type)/FL_toe_link.STL" scale="1 1 1"/> -->
       </geometry>
       <material name="white"/>
     </visual>
@@ -599,7 +853,6 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <origin rpy="0 0 0" xyz="3.045e-05 0 -0.00104172"/>
       <inertia ixx="1.0579999999999999e-05" ixy="0.0" ixz="0.0" iyy="1.0579999999999999e-05" iyz="0.0" izz="1.0579999999999999e-05"/>
     </inertial>
     <!-- <inertial>
@@ -618,6 +871,39 @@
                         izz="${foot_izz}"/>
             </inertial> -->
   </link>
+  <gazebo reference="LH_foot_fixed">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+  <transmission name="LH_HAA_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LH_HAA">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LH_HAA_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="LH_HFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LH_HFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LH_HFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="LH_KFE_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="LH_KFE">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="LH_KFE_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <!-- Robot Footprint -->
   <!-- <joint name="footprint_joint" type="fixed">
         <parent link="base"/>
