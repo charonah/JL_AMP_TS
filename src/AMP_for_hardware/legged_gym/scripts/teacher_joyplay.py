@@ -160,12 +160,12 @@ def play(args):
     # env_cfg.terrain.step_height = 0.10
     # env_cfg.terrain.terrain_length = 8.
     # env_cfg.terrain.terrain_width = 8.
-    env_cfg.terrain.terrain_name = 2
+    env_cfg.terrain.terrain_name = 0
     env_cfg.terrain.num_rows = 5   #10
     env_cfg.terrain.num_cols = 5    #20
     env_cfg.domain_rand.friction_range = [1.0, 1.5]
 
-    # env_cfg.terrain.terrain_proportions = [0., 0., 0.5, 0.5, 0.0]
+    env_cfg.terrain.terrain_proportions = [0.3, 0.7, 0., 0., 0.0]
     env_cfg.terrain.curriculum = True 
 
     env_cfg.noise.add_noise = False

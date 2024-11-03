@@ -118,7 +118,7 @@ class Terrain:
                                 length=self.width_per_env_pixels,
                                 vertical_scale=self.cfg.vertical_scale,
                                 horizontal_scale=self.cfg.horizontal_scale)
-        slope = difficulty * 0.4
+        slope = difficulty * 0.8  #0.4
         min_height = -0.01 - 7 / 90 * difficulty
         max_height = 0.01 + 7 / 90 * difficulty
         step_height = 0.05 + 0.18 * difficulty

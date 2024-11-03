@@ -1357,7 +1357,7 @@ class LeggedRobot(BaseTask):
         # save body names and dof names from the asset
         body_names = self.gym.get_asset_rigid_body_names(robot_asset)
         self.dof_names = self.gym.get_asset_dof_names(robot_asset)
-        # print("关节名字：“self.dof_names)
+        # print("关节名字:/n%f",self.dof_names)
         self.num_bodies = len(body_names)
         self.num_dofs = len(self.dof_names)
         feet_names = [s for s in body_names if self.cfg.asset.foot_name in s]
@@ -1742,7 +1742,7 @@ class LeggedRobot(BaseTask):
     
     def _reward_orientation_up(self):   
         # Penalize non flat base orientation
-        reward = torch.sum(torch.square(self.projected_gravity[:, :2]), dim=1)*torch.clamp(-self.projected_gravity[:,2],0,1)
+        reward = torch.sum(torch.square(self.projected_gravity[:, :2])*torch.tensor([self.cfg.rewards.pitch_roll_factor], device=self.device), dim=1)*torch.clamp(-self.projected_gravity[:,2],0,1)
         reward[self.noflat_idx] = 0
         return reward
     

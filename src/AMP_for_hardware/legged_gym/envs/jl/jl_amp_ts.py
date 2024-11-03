@@ -26,7 +26,7 @@ class JLAMPTS(LeggedRobot):
     
     def _reward_orientation(self):
         # Penalize non flat base orientation
-        reward =  torch.sum(torch.square(self.projected_gravity[:, :2]), dim=1)
+        reward =  torch.sum(torch.square(self.projected_gravity[:, :2])*torch.tensor([self.cfg.rewards.pitch_roll_factor], device=self.device), dim=1)
         reward[self.noflat_idx] = 0
         return reward
 

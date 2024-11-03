@@ -95,11 +95,11 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         terrain_width = 8.
         platform = 3.
         # terrain types: [rough_flat, slope, stairs up, stairs down, discrete, wave]
-        terrain_proportions = [0.2, 0.2, 0.3, 0.3]          # 切记第一个是rough_flat
+        terrain_proportions = [0.3, 0.7, 0., 0.]          # 切记第一个是rough_flat #[0.2, 0.2, 0.3, 0.3] 
         # terrain_proportions = [0.0, 0.0, 1.0, 0.0]          # play_test
-        terrain_name = 0                                        # 0: normal_small ,1: range_stepwidth_small
+        terrain_name = 0                                        # 0: normal_small ,1: range_stepwidth_small 2:stair
         step_width = 0.25                                       # step width for the stairs
-        slope_treshold = 0.4 # slopes above this threshold will be corrected to vertical surfaces
+        slope_treshold = 0.6 # slopes above this threshold will be corrected to vertical surfaces
 
     class asset( LeggedRobotCfg.asset ):
         file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl/urdf/jl.urdf"
@@ -193,34 +193,22 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         soft_dof_pos_limit = 0.9
         base_height_target = 0.25                              # 换urdf记得改!!!!
         toe_height_target = 0.1                                # 换urdf记得改!!!! 0.08 0.10 0.12
+        pitch_roll_factor = [1, 1]                             # 调节pitch和roll的惩罚力度
         class scales( LeggedRobotCfg.rewards.scales ):     
             termination = -0.0
             tracking_lin_vel = 1.2
             tracking_ang_vel = 0.5
-            lin_vel_z = -4
-            ang_vel_xy = -0.25
-            orientation = -1.5                                 # -0.2
-            collision = -1.                                    # -0.1 -0.2 
-            base_height = -0.15                                 # -100, -80 -0.2 
-            feet_collision_onstair = -0.2                       # -0.1
-            foot_clearance = 0.15                              # -0.5 -1.0 -2.0 -1.0 -5.
-            foot_discrepancy = 0
-            feet_air_time = 1.5                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
+            lin_vel_z = -2
+            orientation = -1.5  # 增加权重
+            collision = -1.0
+            base_height = -0.20
+            # feet_collision_onstair = -0.2
+            feet_air_time = 0.0  # 移除奖励
+            move_feet = -2  # 移除惩罚
+            torques = -5e-4  # 增加权重
+            action_rate = -0.05  # 增加权重
+            stumble = -2
             stand_still = -1
-            hip_pos_limits = -0.2
-            torques = -7e-4                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
-            dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
-            base_acc = -0.15
-            action_rate = -0.02                                 # -0.15  -0.1      smooth_scale
-            dof_vel = -2.5e-4
-            dof_pos_limits = -5.
-            dof_vel_limits = -0.
-            torque_limits = -0.   # -7e-2
-            move_feet = -5
-            stumble = -3                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0       
-            # from locomotion
-            # foot_clearance_up =  -0.5    #-0.5
-            # foot_mirror_up = -0.005
             hip_pos = -0.05
             smoothness = -0.01
             # joint_power = -2e-5

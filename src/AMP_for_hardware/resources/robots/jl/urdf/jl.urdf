@@ -151,13 +151,13 @@
     <child link="FR_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.0"/>
-    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
   </joint>
   <link name="FR_calf">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/FL_calf_link.STL" scale="1 1 1"/>
+        <mesh filename="../meshes/FR_calf_link.STL" scale="1 1 1"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -274,7 +274,7 @@
     <child link="FL_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.0"/>
-    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
   </joint>
   <link name="FL_calf">
     <visual>
@@ -399,7 +399,7 @@
     <child link="RR_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.0"/>
-    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
   </joint>
   <link name="RR_calf">
     <visual>
@@ -538,7 +538,7 @@
     <child link="RL_calf"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.0" friction="0.0"/>
-    <limit effort="12.0001" lower="-2.65" upper="-0.9" velocity="30.9971"/>
+    <limit effort="12.0001" lower="-2.55" upper="-0.9" velocity="30.9971"/>
   </joint>
   <link name="RL_calf">
     <visual>
