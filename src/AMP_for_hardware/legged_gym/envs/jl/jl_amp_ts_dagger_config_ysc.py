@@ -202,7 +202,6 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             orientation = -1.5  # 增加权重
             collision = -1.0
             base_height = -0.20
-            # feet_collision_onstair = -0.2
             foot_clearance = 0.15
             feet_air_time = 0.2  # 移除奖励
             move_feet = -2  # 移除惩罚
@@ -213,6 +212,18 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             hip_pos = -0.05
             smoothness = -0.01
             # joint_power = -2e-5
+
+            # v2 
+            # ang_vel_xy = -0.25
+            # feet_collision_onstair = -0.2                       # -0.1
+            # foot_discrepancy = 0
+            # hip_pos_limits = -0.2
+            # dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
+            # base_acc = -0.15
+            # dof_vel = -2.5e-4
+            # dof_pos_limits = -5.
+            # dof_vel_limits = -0.
+            # torque_limits = -0.
 
     class commands(LeggedRobotCfg.commands):
         curriculum = False                                  # commands.curriculum与terrain.curriculum不能同时为True
