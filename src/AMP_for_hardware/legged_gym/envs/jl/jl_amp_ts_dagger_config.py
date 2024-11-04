@@ -203,7 +203,8 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             collision = -1.0
             base_height = -0.20
             # feet_collision_onstair = -0.2
-            feet_air_time = 0.0  # 移除奖励
+            foot_clearance = 0.15
+            feet_air_time = 0.2  # 移除奖励
             move_feet = -2  # 移除惩罚
             torques = -5e-4  # 增加权重
             action_rate = -0.05  # 增加权重
