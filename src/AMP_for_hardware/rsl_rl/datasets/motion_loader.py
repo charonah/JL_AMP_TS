@@ -141,9 +141,19 @@ class AMPLoader:
             AMPLoader.get_joint_pose_batch(motion_data), 4, axis=1)
         joint_pos = np.hstack([jp_fl, jp_fr, jp_rl, jp_rr])
 
+        #from pybullet #
+        # jp_fl, jp_fr, jp_rl, jp_rr = np.split(
+        #     AMPLoader.get_joint_pose_batch(motion_data), 4, axis=1)
+        # joint_pos = np.hstack([jp_fl, jp_fr, jp_rl, jp_rr])
+
         jv_fr, jv_fl, jv_rr, jv_rl = np.split(
             AMPLoader.get_joint_vel_batch(motion_data), 4, axis=1)
         joint_vel = np.hstack([jv_fl, jv_fr, jv_rl, jv_rr])
+
+         #from pybullet #
+        # jv_fl, jv_fr, jv_rl, jv_rr = np.split(
+        #     AMPLoader.get_joint_vel_batch(motion_data), 4, axis=1)
+        # joint_vel = np.hstack([jv_fl, jv_fr, jv_rl, jv_rr])
 
         # fp_fr, fp_fl, fp_rr, fp_rl = np.split(
         #     AMPLoader.get_tar_toe_pos_local_batch(motion_data), 4, axis=1)

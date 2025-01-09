@@ -31,9 +31,9 @@ import glob
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 
-# MOTION_FILES = glob.glob('datasets/mocap_motions_jl/*')
+MOTION_FILES = glob.glob('datasets/mocap_motions/*')
 # MOTION_FILES = glob.glob('datasets/mocap_motions_jl/single.txt')
-MOTION_FILES = glob.glob('datasets/mocap_motions_jl/jl_31_data.txt')
+# MOTION_FILES = glob.glob('datasets/mocap_motions_jl/jl_31_data.txt')
 # MOTION_FILES = glob.glob('datasets/test/*')
 
 class JLAMPTSDAggerCfg( LeggedRobotCfg ):
@@ -51,22 +51,55 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         episode_length_s = 20                                   # episode length in seconds
 
     class init_state( LeggedRobotCfg.init_state ): 
-        pos = [0.0, 0.0, 0.25]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
-        default_joint_angles = {                                # = target angles [rad] when action = 0.0
-            "FL_hip_joint": 0.,                                 # [rad]
-            "RL_hip_joint": 0.,                                 # [rad]
-            "FR_hip_joint": -0.,                                # [rad]
-            "RR_hip_joint": -0.,                                # [rad]
+        # pos = [0.0, 0.0, 0.25]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
+        # default_joint_angles = {                                # = target angles [rad] when action = 0.0
+        #     "FL_hip_joint": 0.,                                 # [rad]
+        #     "RL_hip_joint": 0.,                                 # [rad]
+        #     "FR_hip_joint": -0.,                                # [rad]
+        #     "RR_hip_joint": -0.,                                # [rad]
 
-            "FL_thigh_joint": 0.8,                              # [rad]
-            "RL_thigh_joint": 0.8,                              # [rad]
-            "FR_thigh_joint": 0.8,                              # [rad]
-            "RR_thigh_joint": 0.8,                              # [rad]
+        #     "FL_thigh_joint": 0.8,                              # [rad]
+        #     "RL_thigh_joint": 0.8,                              # [rad]
+        #     "FR_thigh_joint": 0.8,                              # [rad]
+        #     "RR_thigh_joint": 0.8,                              # [rad]
 
-            "FL_calf_joint": -1.3,                              # [rad]
-            "RL_calf_joint": -1.3,                              # [rad]
-            "FR_calf_joint": -1.3,                              # [rad]
-            "RR_calf_joint": -1.3,                              # [rad]
+        #     "FL_calf_joint": -1.3,                              # [rad]
+        #     "RL_calf_joint": -1.3,                              # [rad]
+        #     "FR_calf_joint": -1.3,                              # [rad]
+        #     "RR_calf_joint": -1.3,                              # [rad]
+        # }
+        pos = [0.0, 0.0, 0.42] # x,y,z [m]
+        default_joint_angles = { # = target angles [rad] when action = 0.0
+            'FL_hip_joint': 0.0,   # [rad]
+            'RL_hip_joint': 0.0,   # [rad]
+            'FR_hip_joint': 0.0 ,  # [rad]
+            'RR_hip_joint': 0.0,   # [rad]
+
+            'FL_thigh_joint': 0.9,     # [rad]
+            'RL_thigh_joint': 0.9,   # [rad]
+            'FR_thigh_joint': 0.9,     # [rad]
+            'RR_thigh_joint': 0.9,   # [rad]
+
+            'FL_calf_joint': -1.8,   # [rad]
+            'RL_calf_joint': -1.8,    # [rad]
+            'FR_calf_joint': -1.8,  # [rad]
+            'RR_calf_joint': -1.8,    # [rad]
+        }
+        start_joint_angles = {                                # = target angles [rad] when action = 0.0
+            'FL_hip_joint': 0.0,   # [rad]
+            'RL_hip_joint': 0.0,   # [rad]
+            'FR_hip_joint': 0.0 ,  # [rad]
+            'RR_hip_joint': 0.0,   # [rad]
+
+            'FL_thigh_joint': 0.9,     # [rad]
+            'RL_thigh_joint': 0.9,   # [rad]
+            'FR_thigh_joint': 0.9,     # [rad]
+            'RR_thigh_joint': 0.9,   # [rad]
+
+            'FL_calf_joint': -1.8,   # [rad]
+            'RL_calf_joint': -1.8,    # [rad]
+            'FR_calf_joint': -1.8,  # [rad]
+            'RR_calf_joint': -1.8,    # [rad]
         }
         randomize_start_xy = False
         rand_xy_range = 1
@@ -78,8 +111,8 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         control_type = 'P'
         # stiffness = {'joint': 18.}                              # [N*m/rad]
         # damping = {'joint': 0.4}                               # [N*m*s/rad]
-        stiffness = {'hip_joint': 8., 'thigh_joint': 8, 'calf_joint': 9.2}                              # [N*m/rad]
-        damping = {'hip_joint': 0.2, 'thigh_joint': 0.2, 'calf_joint': 0.23}                               # [N*m*s/rad]
+        stiffness = {'joint': 80.}  # [N*m/rad]
+        damping = {'joint': 1.0}     # [N*m*s/rad]                     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         # action_scale = [0.25, 0.25, 0.25]
         action_scale = 0.25
@@ -103,7 +136,8 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         slope_treshold = 0.4 # slopes above this threshold will be corrected to vertical surfaces
 
     class asset( LeggedRobotCfg.asset ):
-        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl/urdf/jl.urdf"
+        # file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl/urdf/jl.urdf"
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/a1/urdf/a1.urdf'
         name = "jl"
         foot_name = "foot"
         penalize_contacts_on = ["base", "thigh", "calf"]
@@ -195,30 +229,54 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         base_height_target = 0.25                               # 换urdf记得改!!!!
         toe_height_target = 0.1                                # 换urdf记得改!!!! 0.08 0.10 0.12
         class scales( LeggedRobotCfg.rewards.scales ):            
+            # termination = -0.0
+            # tracking_lin_vel = 1.0
+            # tracking_ang_vel = 0.5
+            # lin_vel_z = -2
+            # ang_vel_xy = -0.2
+            # orientation = -0.5                                 # -0.2
+            # collision = -1.                                    # -0.1 -0.2 
+            # base_height = -0.15                                 # -100, -80 -0.2 
+            # feet_collision_onstair = -0.2                       # -0.1
+            # foot_clearance = 0.1                              # -0.5 -1.0 -2.0 -1.0 -5.
+            # foot_discrepancy = 0.02
+            # feet_air_time = 1.2                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
+            # stand_still = -0.75
+            # hip_pos_limits = -0.16
+            # torques = -7e-4                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
+            # dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
+            # base_acc = -0.1
+            # action_rate = -0.01                                 # -0.15  -0.1      smooth_scale
+            # dof_vel = -2e-4
+            # dof_pos_limits = -5.
+            # dof_vel_limits = -0.
+            # torque_limits = -0.
+            # move_feet = -0.0
+            # stumble = -0.1                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0
             termination = -0.0
-            tracking_lin_vel = 1.0
-            tracking_ang_vel = 0.5
-            lin_vel_z = -2
-            ang_vel_xy = -0.2
-            orientation = -0.5                                 # -0.2
-            collision = -1.                                    # -0.1 -0.2 
-            base_height = -0.15                                 # -100, -80 -0.2 
-            feet_collision_onstair = -0.2                       # -0.1
-            foot_clearance = 0.1                              # -0.5 -1.0 -2.0 -1.0 -5.
-            foot_discrepancy = 0.02
-            feet_air_time = 1.2                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
-            stand_still = -0.75
-            hip_pos_limits = -0.16
-            torques = -7e-4                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
-            dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
-            base_acc = -0.1
-            action_rate = -0.01                                 # -0.15  -0.1      smooth_scale
-            dof_vel = -2e-4
-            dof_pos_limits = -5.
+            tracking_lin_vel = .0
+            tracking_ang_vel = 0.
+            lin_vel_z = -0
+            ang_vel_xy = -0.
+            orientation = -0.                                 # -0.2
+            collision = -0.                                    # -0.1 -0.2 
+            base_height = -0.                                 # -100, -80 -0.2 
+            feet_collision_onstair = -0.                       # -0.1
+            foot_clearance = 0.                              # -0.5 -1.0 -2.0 -1.0 -5.
+            foot_discrepancy = 0.0
+            feet_air_time = 0.0                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
+            stand_still = -0.0
+            hip_pos_limits = -0.0
+            torques = -0                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
+            dof_acc = -0                                        # -2.5e-7       smooth_scale
+            base_acc = -0.
+            action_rate = -0.0                                 # -0.15  -0.1      smooth_scale
+            dof_vel = -0
+            dof_pos_limits = -0.
             dof_vel_limits = -0.
             torque_limits = -0.
             move_feet = -0.0
-            stumble = -0.1                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0
+            stumble = -0.0                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0
 
     class commands(LeggedRobotCfg.commands):
         curriculum = False                                  # commands.curriculum与terrain.curriculum不能同时为True

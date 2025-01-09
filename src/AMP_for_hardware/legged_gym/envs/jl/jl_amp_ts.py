@@ -4,8 +4,10 @@ import numpy as np
 from legged_gym.utils.math import quat_apply_yaw, wrap_to_pi, torch_rand_sqrt_float
 from isaacgym.torch_utils import *
 from isaacgym import gymapi
+from legged_gym.utils.terrain import Terrain
 
 class JLAMPTS(LeggedRobot):
+
     #------------ reward functions----------------
     def _reward_lin_vel_z(self):
         # Penalize z axis base linear velocity
@@ -27,7 +29,8 @@ class JLAMPTS(LeggedRobot):
     def _reward_orientation(self):
         # Penalize non flat base orientation
         reward =  torch.sum(torch.square(self.projected_gravity[:, :2])*torch.tensor([self.cfg.rewards.pitch_roll_factor], device=self.device), dim=1)
-        reward[self.noflat_idx] = 0
+        # reward[self.noflat_idx] = 0
+        reward[self.stair_idx] = 0
         return reward
 
     # def _reward_base_height(self):
@@ -55,11 +58,16 @@ class JLAMPTS(LeggedRobot):
     
     def _reward_dof_acc(self):
         # Penalize dof accelerations
-        return torch.sum(torch.square((self.last_dof_vel - self.dof_vel) / self.dt), dim=1)
+        delta = (self.last_dof_vel - self.dof_vel) / self.dt
+        # delta = torch.where(torch.abs(delta) < 10, torch.zeros_like(delta), delta)
+        return torch.sum(torch.square(delta), dim=1)
     
     def _reward_action_rate(self):
         # Penalize changes in actions
-        return torch.sum(torch.square(self.last_actions - self.actions), dim=1)
+        delta = self.last_actions - self.actions
+        # delta = torch.where(torch.abs(delta) < 30, torch.zeros_like(delta), delta)
+        return torch.sum(torch.square(delta), dim=1)
+        # return torch.sum(torch.square(self.last_actions - self.actions), dim=1)
     
     def _reward_collision(self):
         # Penalize collisions on selected bodies
@@ -91,7 +99,7 @@ class JLAMPTS(LeggedRobot):
         # Penalize hip dof pos too far from default value
         hip_pos = self.dof_pos[:,[0,3,6,9]]
         reward = torch.sum(torch.square(hip_pos - self.default_dof_pos[:,[0,3,6,9]]),dim=1,keepdim=True).squeeze(1)
-        reward *= ~(torch.norm(self.commands[:, 2], dim=-1) > 0.1)
+        reward *= ~(torch.norm(self.commands[:, 2], dim=-1) > 0.08)
         # reward[self.rotate_idx] = 0
         return reward
     
@@ -131,9 +139,16 @@ class JLAMPTS(LeggedRobot):
         
     def _reward_stand_still(self):
         # Penalize motion at zero commands
-        reward_stand_still = torch.sum(torch.abs(self.dof_pos - self.default_dof_pos), dim=1) * (torch.norm(self.commands[:, :2], dim=1) < 0.1)
-        reward_stand_still[self.stair_idx] = 0
+        # for plant:
+        # reward_stand_still = torch.sum(torch.abs(self.dof_pos - self.default_dof_pos), dim=1) * (torch.norm(self.commands[:, :2], dim=1) < 0.1)
+        # for clamp:
+        reward_stand_still = torch.sum(torch.abs(self.dof_pos - self.default_start_pos), dim=1) * (torch.norm(self.commands[:, :2], dim=1) < 0.1)
+        # reward_stand_still[self.stair_idx] = 0
         return reward_stand_still
+
+    def _reward_stand_still_all(self):
+        # Penalize motion at zero commands
+        return torch.sum(torch.abs(self.dof_pos - self.default_dof_pos), dim=1) 
 
     def _reward_feet_contact_forces(self):
         # penalize high contact forces
@@ -144,6 +159,12 @@ class JLAMPTS(LeggedRobot):
         feet_vel = self.rigid_body_state[:, self.feet_indices, 7:9]
         cond = (torch.norm(self.commands[:,:3],dim=-1) > 0.2).int()
         return (torch.sum(torch.norm(feet_vel,dim=-1),dim=-1) < 0.1).int() * cond
+    
+    def _reward_move_feet_now(self):
+        # Penalize the behavior of not moving when a command is given.
+        feet_vel = self.rigid_body_state[:, self.feet_indices, 7:9]
+        cond = (torch.norm(self.commands[:,:3],dim=-1) > 0.1).int()
+        return (torch.sum(torch.norm(feet_vel,dim=-1),dim=-1) < 0.01).int() * cond
 
     def _reward_foot_clearance(self):
         """A reward term to encourage larger feet clearances."""
@@ -228,10 +249,10 @@ class JLAMPTS(LeggedRobot):
         
     #     return torch.sum(clearance_reward, dim=1)*torch.clamp(-self.projected_gravity[:,2],0,1)
     
-    def _reward_foot_mirror_up(self):
+    def _reward_foot_mirror(self):
         diff1 = torch.sum(torch.square(self.dof_pos[:,[0,1,2]] - self.dof_pos[:,[9,10,11]]),dim=-1)
         diff2 = torch.sum(torch.square(self.dof_pos[:,[3,4,5]] - self.dof_pos[:,[6,7,8]]),dim=-1)
-        return 0.5*torch.clamp(-self.projected_gravity[:,2],0,1)*(diff1 + diff2)
+        return 0.5*(diff1 + diff2)
     
     def _reward_hip_pos(self):
         #return torch.sum(torch.square(self.dof_pos[:, [0, 3, 6, 9]] - self.default_dof_pos[:, [0, 3, 6, 9]]), dim=1)
@@ -248,7 +269,22 @@ class JLAMPTS(LeggedRobot):
     def _reward_joint_power(self):
         # Penalize high power
         return torch.sum(torch.abs(self.dof_vel) * torch.abs(self.torques), dim=1)
+    
+    def _reward_foot_slide(self):
+        cur_footvel_translated = self.rigid_body_state[:, self.feet_indices, 7:10] - self.root_states[:, 7:10].unsqueeze(1)
+        footvel_in_body_frame = torch.zeros(self.num_envs, len(self.feet_indices), 3, device=self.device)
+        for i in range(len(self.feet_indices)):
+            footvel_in_body_frame[:, i, :] = quat_rotate_inverse(self.base_quat, cur_footvel_translated[:, i, :])
+        foot_leteral_vel = torch.sqrt(torch.sum(torch.square(footvel_in_body_frame[:, :, :2]), dim=2)).view(self.num_envs, -1)
+        contact = self.contact_forces[:, self.feet_indices, 2] > 1.
+        contact_filt = torch.logical_or(contact, self.last_contacts) 
+        cost_slide = torch.sum(contact_filt * foot_leteral_vel, dim=1)
+        return cost_slide
 
+    def _reward_feet_velocity(self):
+        foot_v = self.rigid_body_state[:, self.feet_indices, 7:10]
+        feet_v_slip = self.contact_filt * torch.norm(foot_v[:, :, :3], dim=2)
 
+        return torch.sum(feet_v_slip, dim=1)
     
  

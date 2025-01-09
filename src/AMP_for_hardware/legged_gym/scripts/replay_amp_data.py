@@ -56,9 +56,9 @@ def play(args):
         print('Exported policy as jit script to: ', path)
     camera_rot = 0
     camera_rot_per_sec = np.pi / 6
-    SET_CAMERA  = False
+    SET_CAMERA  = True 
     img_idx = 0
-    farame_duration = 0.2  # zero for default frame_duration, positive for frame_duration = farame_duration
+    farame_duration = 0.04  # zero for default frame_duration, positive for frame_duration = farame_duration
     env.amp_loader = AMPLoader(motion_files=env_cfg.env.amp_motion_files, device=env.device, time_between_frames=env.dt, frame_dura=farame_duration)
 
     video_duration = 100

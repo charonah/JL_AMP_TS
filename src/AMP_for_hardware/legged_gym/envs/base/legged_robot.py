@@ -242,7 +242,11 @@ class LeggedRobot(BaseTask):
         base_height = self.root_states[:, 2] - torch.mean(self.measured_heights,dim=1)
         # base_height = self.root_states[:, 2]
         base_height_buf = base_height < 0.15
-        
+
+        # torque limit
+        torque_exceed_buf = torch.any(torch.abs(self.torques) > self.torque_limits, dim=-1)
+        self.reset_buf |= torque_exceed_buf
+
         self.reset_buf |= contact_force_buf
         # self.reset_buf |= base_height_buf
         self.reset_buf |= base_ang_pitch_buf
@@ -615,8 +619,11 @@ class LeggedRobot(BaseTask):
             for i in range(1, len(props)):
                 props[i].mass *= self.link_masses[env_id, i-1]
         
+        # if self.cfg.domain_rand.randomize_com:
+        #      props[0].com = gymapi.Vec3(self.com_displacements[env_id, 0], self.com_displacements[env_id, 1],
+        #                             self.com_displacements[env_id, 2])
         if self.cfg.domain_rand.randomize_com:
-             props[0].com = gymapi.Vec3(self.com_displacements[env_id, 0], self.com_displacements[env_id, 1],
+             props[0].com += gymapi.Vec3(self.com_displacements[env_id, 0], self.com_displacements[env_id, 1],
                                     self.com_displacements[env_id, 2])
              
         if self.cfg.domain_rand.randomize_link_com:
@@ -1168,10 +1175,17 @@ class LeggedRobot(BaseTask):
 
         # joint positions offsets and PD gains
         self.default_dof_pos = torch.zeros(self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
+        self.default_start_pos = torch.zeros(self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
+
         for i in range(self.num_dofs):
             name = self.dof_names[i]
+
             angle = self.cfg.init_state.default_joint_angles[name]
+            start_angle = self.cfg.init_state.start_joint_angles[name]
+
             self.default_dof_pos[i] = angle
+            self.default_start_pos[i] = start_angle
+
             found = False
             for dof_name in self.cfg.control.stiffness.keys():
                 if dof_name in name:
@@ -1184,6 +1198,7 @@ class LeggedRobot(BaseTask):
                 if self.cfg.control.control_type in ["P", "V"]:
                     print(f"PD gain of joint {name} were not defined, setting them to zero")
         self.default_dof_pos = self.default_dof_pos.unsqueeze(0)
+        self.default_start_pos = self.default_start_pos.unsqueeze(0)
             
         if self.cfg.domain_rand.add_lag:   
             self.lag_buffer = torch.zeros(self.num_envs,self.num_actions,self.cfg.domain_rand.lag_timesteps_range[1]+1,device=self.device)
@@ -1866,7 +1881,7 @@ class LeggedRobot(BaseTask):
         return 1 - self.projected_gravity[:,2]
     
     def _reward_has_contact(self):
-        contact_filt = 1.*self.contact_filt
+        contact_filt = 1.*self.xy_contact_state
         return(torch.norm(self.commands[:, :2], dim=1) < 0.1)*torch.sum(contact_filt,dim=-1)/4 
     
     def _reward_stand_still(self):

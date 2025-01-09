@@ -165,7 +165,7 @@ def play(args):
     env_cfg.terrain.num_cols = 5    #20
     env_cfg.domain_rand.friction_range = [1.0, 1.5]
 
-    env_cfg.terrain.terrain_proportions = [0.3, 0.7, 0., 0., 0.0]
+    env_cfg.terrain.terrain_proportions = [0.2, 0.2, 0.3, 0.3, 0., 0.0] 
     env_cfg.terrain.curriculum = True 
 
     env_cfg.noise.add_noise = False
@@ -247,7 +247,7 @@ def play(args):
                     env.gym.write_viewer_image_to_file(env.viewer, filename)
                     img_idx += 1 
             
-            print(x_vel_cmd, y_vel_cmd, yaw_vel_cmd, env.root_states[:, 2] - torch.mean(env.measured_heights, dim=1))
+            print(x_vel_cmd, y_vel_cmd, yaw_vel_cmd, env.root_states[:, 2] - torch.mean(env.measured_heights, dim=1), env.dof_vel[robot_index, joint_index].item())
 
             if CAMERA_MODE == "follow":
                 # camera_position += camera_vel * env.dt

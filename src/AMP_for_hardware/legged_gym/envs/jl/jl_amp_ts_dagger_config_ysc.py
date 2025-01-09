@@ -51,22 +51,39 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         episode_length_s = 20                                   # episode length in seconds
 
     class init_state( LeggedRobotCfg.init_state ): 
-        pos = [0.0, 0.0, 0.3]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
+        pos = [0.0, 0.0, 0.35]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
         default_joint_angles = {                                # = target angles [rad] when action = 0.0
+            "FL_hip_joint": 0.1,                                 # [rad]
+            "RL_hip_joint": 0.1,                                 # [rad]
+            "FR_hip_joint": -0.1,                                # [rad]
+            "RR_hip_joint": -0.1,                                # [rad]
+
+            "FL_thigh_joint": 0.69,                              # [rad]
+            "RL_thigh_joint": 0.79,                              # [rad]
+            "FR_thigh_joint": 0.69,                              # [rad]
+            "RR_thigh_joint": 0.79,                              # [rad]
+
+            "FL_calf_joint": -1.21,                              # [rad]
+            "RL_calf_joint": -1.21,                              # [rad]
+            "FR_calf_joint": -1.21,                              # [rad]
+            "RR_calf_joint": -1.21,                              # [rad]
+        }
+
+        start_joint_angles = {                                # = target angles [rad] when action = 0.0
             "FL_hip_joint": 0.,                                 # [rad]
             "RL_hip_joint": 0.,                                 # [rad]
             "FR_hip_joint": -0.,                                # [rad]
             "RR_hip_joint": -0.,                                # [rad]
 
-            "FL_thigh_joint": 0.86,                              # [rad]
-            "RL_thigh_joint": 0.86,                              # [rad]
-            "FR_thigh_joint": 0.86,                              # [rad]
-            "RR_thigh_joint": 0.86,                              # [rad]
+            "FL_thigh_joint": 0.74,                              # [rad]
+            "RL_thigh_joint": 0.74,                              # [rad]
+            "FR_thigh_joint": 0.74,                              # [rad]
+            "RR_thigh_joint": 0.74,                              # [rad]
 
-            "FL_calf_joint": -1.45,                              # [rad]
-            "RL_calf_joint": -1.45,                              # [rad]
-            "FR_calf_joint": -1.45,                              # [rad]
-            "RR_calf_joint": -1.45,                              # [rad]
+            "FL_calf_joint": -1.41,                              # [rad]
+            "RL_calf_joint": -1.41,                              # [rad]
+            "FR_calf_joint": -1.41,                              # [rad]
+            "RR_calf_joint": -1.41,                              # [rad]
         }
         randomize_start_xy = False
         rand_xy_range = 1
@@ -95,11 +112,11 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         terrain_width = 8.
         platform = 3.
         # terrain types: [rough_flat, slope, stairs up, stairs down, discrete, wave]
-        terrain_proportions = [0.2, 0.2, 0.3, 0.3]          # 切记第一个是rough_flat #[0.2, 0.2, 0.3, 0.3] 
+        terrain_proportions = [0.3, 0.7, 0., 0.]          # 切记第一个是rough_flat #[0.2, 0.2, 0.3, 0.3] 
         # terrain_proportions = [0.0, 0.0, 1.0, 0.0]          # play_test
         terrain_name = 0                                        # 0: normal_small ,1: range_stepwidth_small 2:stair
         step_width = 0.25                                       # step width for the stairs
-        slope_treshold = 0.2 # slopes above this threshold will be corrected to vertical surfaces
+        slope_treshold = 0.6 # slopes above this threshold will be corrected to vertical surfaces
 
     class asset( LeggedRobotCfg.asset ):
         file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl1/urdf/ysc180.urdf"
@@ -203,7 +220,7 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             collision = -1.0
             base_height = -0.20
             foot_clearance = 0.15
-            feet_air_time = 0.2  # 移除奖励
+            feet_air_time = 1.0  # 移除奖励
             move_feet = -2  # 移除惩罚
             torques = -5e-4  # 增加权重
             action_rate = -0.05  # 增加权重
@@ -214,14 +231,14 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
             # joint_power = -2e-5
 
             # v2 
-            # ang_vel_xy = -0.25
-            # feet_collision_onstair = -0.2                       # -0.1
+            ang_vel_xy = -0.25
+            feet_collision_onstair = -0.2                       # -0.1
             # foot_discrepancy = 0
             # hip_pos_limits = -0.2
             # dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
-            # base_acc = -0.15
+            base_acc = -0.15
             # dof_vel = -2.5e-4
-            # dof_pos_limits = -5.
+            dof_pos_limits = -5.
             # dof_vel_limits = -0.
             # torque_limits = -0.
 

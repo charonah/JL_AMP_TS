@@ -146,9 +146,9 @@ def play(args):
     # override some parameters for testing
     env_cfg.env.num_envs = min(env_cfg.env.num_envs, 1)
     env_cfg.env.episode_length_s = 1000    #modify to change the running time 
-    env_cfg.terrain.num_rows = 10
-    env_cfg.terrain.num_cols = 20
-    # env_cfg.terrain.terrain_proportions = [0.2, 0.2, 0.2, 0.2, 0.2]
+    env_cfg.terrain.num_rows = 5
+    env_cfg.terrain.num_cols = 5
+    env_cfg.terrain.terrain_proportions = [0.2, 0.2, 0.3, 0.3, 0.]
     env_cfg.terrain.curriculum = True
     env_cfg.noise.add_noise = False
     env_cfg.domain_rand.randomize_friction = False

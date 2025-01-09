@@ -46,7 +46,7 @@ from .go1.go1_amp_ts_dagger_config import GO1AMPTSDAggerCfg, GO1AMPTSDAggerCfgPP
 # from .jl.jl_amp_ts import JLAMPTS
 
 # from .jl.jl_amp_ts_dagger_config_0 import JLAMPTSDAggerCfg, JLAMPTSDAggerCfgPPO
-from .jl.jl_amp_ts_dagger_config_ysc import JLAMPTSDAggerCfg, JLAMPTSDAggerCfgPPO
+from .jl.jl_amp_ts_dagger_config import JLAMPTSDAggerCfg, JLAMPTSDAggerCfgPPO
 from .jl.jl_amp_ts import JLAMPTS
 
 import os

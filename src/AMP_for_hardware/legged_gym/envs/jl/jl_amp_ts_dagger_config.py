@@ -33,7 +33,9 @@ from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobot
 
 # MOTION_FILES = glob.glob('datasets/mocap_motions_jl/*')
 # MOTION_FILES = glob.glob('datasets/mocap_motions_jl/single.txt')
-MOTION_FILES = glob.glob('datasets/mocap_motions_jl/jl_31_data.txt')
+# MOTION_FILES = glob.glob('datasets/mocap_motions_jl_ysc180/walk_180.txt')
+# MOTION_FILES = glob.glob('datasets/mocap_motions_jl_ysc2go/ysc2go.txt')
+MOTION_FILES = glob.glob('datasets/mocap_motions_jl_ysc2go/ysc2go_33cm.txt')
 # MOTION_FILES = glob.glob('datasets/test/*')
 
 class JLAMPTSDAggerCfg( LeggedRobotCfg ):
@@ -51,22 +53,39 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         episode_length_s = 20                                   # episode length in seconds
 
     class init_state( LeggedRobotCfg.init_state ): 
-        pos = [0.0, 0.0, 0.25]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
+        pos = [0.0, 0.0, 0.35]                                  # x,y,z [m] base_height:0.23,fall from 0.27, 换urdf记得改!!!!
         default_joint_angles = {                                # = target angles [rad] when action = 0.0
+            "FL_hip_joint": 0.1,                                 # [rad]
+            "RL_hip_joint": 0.1,                                 # [rad]
+            "FR_hip_joint": -0.1,                                # [rad]
+            "RR_hip_joint": -0.1,                                # [rad]
+
+            "FL_thigh_joint": 0.66,                              # [rad]
+            "RL_thigh_joint": 0.66,                              # [rad]
+            "FR_thigh_joint": 0.66,                              # [rad]
+            "RR_thigh_joint": 0.66,                              # [rad]
+
+            "FL_calf_joint": -1.5,                              # [rad]
+            "RL_calf_joint": -1.5,                              # [rad]
+            "FR_calf_joint": -1.5,                              # [rad]
+            "RR_calf_joint": -1.5,                              # [rad]
+        }
+
+        start_joint_angles = {                                # = target angles [rad] when action = 0.0
             "FL_hip_joint": 0.,                                 # [rad]
             "RL_hip_joint": 0.,                                 # [rad]
             "FR_hip_joint": -0.,                                # [rad]
             "RR_hip_joint": -0.,                                # [rad]
 
-            "FL_thigh_joint": 0.8,                              # [rad]
-            "RL_thigh_joint": 0.8,                              # [rad]
-            "FR_thigh_joint": 0.8,                              # [rad]
-            "RR_thigh_joint": 0.8,                              # [rad]
+            "FL_thigh_joint": 0.5,                              # [rad]
+            "RL_thigh_joint": 0.5,                              # [rad]
+            "FR_thigh_joint": 0.5,                              # [rad]
+            "RR_thigh_joint": 0.5,                              # [rad]
 
-            "FL_calf_joint": -1.3,                              # [rad]
-            "RL_calf_joint": -1.3,                              # [rad]
-            "FR_calf_joint": -1.3,                              # [rad]
-            "RR_calf_joint": -1.3,                              # [rad]
+            "FL_calf_joint": -1.2,                              # [rad]
+            "RL_calf_joint": -1.2,                              # [rad]
+            "FR_calf_joint": -1.2,                              # [rad]
+            "RR_calf_joint": -1.2,                              # [rad]
         }
         randomize_start_xy = False
         rand_xy_range = 1
@@ -78,8 +97,8 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         control_type = 'P'
         # stiffness = {'joint': 18.}                              # [N*m/rad]
         # damping = {'joint': 0.4}                               # [N*m*s/rad]
-        stiffness = {'hip_joint': 8., 'thigh_joint': 8, 'calf_joint': 9.2}                              # [N*m/rad]
-        damping = {'hip_joint': 0.2, 'thigh_joint': 0.2, 'calf_joint': 0.23}                               # [N*m*s/rad]
+        stiffness = {'hip_joint': 20., 'thigh_joint': 20, 'calf_joint': 20}                              # [N*m/rad]
+        damping = {'hip_joint': 0.7, 'thigh_joint': 0.7, 'calf_joint': 0.7}                               # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
         # decimation: Number of control action updates @ sim DT per policy DT
@@ -95,14 +114,14 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
         terrain_width = 8.
         platform = 3.
         # terrain types: [rough_flat, slope, stairs up, stairs down, discrete, wave]
-        terrain_proportions = [0.3, 0.7, 0., 0.]          # 切记第一个是rough_flat #[0.2, 0.2, 0.3, 0.3] 
+        terrain_proportions = [0.2, 0.2, 0.3, 0.3]          # 切记第一个是rough_flat #[0.2, 0.2, 0.3, 0.3] 
         # terrain_proportions = [0.0, 0.0, 1.0, 0.0]          # play_test
         terrain_name = 0                                        # 0: normal_small ,1: range_stepwidth_small 2:stair
         step_width = 0.25                                       # step width for the stairs
-        slope_treshold = 0.6 # slopes above this threshold will be corrected to vertical surfaces
+        slope_treshold = 0.4 # slopes above this threshold will be corrected to vertical surfaces
 
     class asset( LeggedRobotCfg.asset ):
-        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl/urdf/jl.urdf"
+        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/jl1/urdf/ysc2gotest.urdf"
         name = "jl"
         foot_name = "foot"
         penalize_contacts_on = ["base", "thigh", "calf"]
@@ -191,28 +210,36 @@ class JLAMPTSDAggerCfg( LeggedRobotCfg ):
     class rewards( LeggedRobotCfg.rewards ):
         tracking_sigma = 0.10                                  # tracking reward = exp(-error^2/sigma)
         soft_dof_pos_limit = 0.9
-        base_height_target = 0.25                              # 换urdf记得改!!!!
-        toe_height_target = 0.1                                # 换urdf记得改!!!! 0.08 0.10 0.12
-        pitch_roll_factor = [1, 1]                             # 调节pitch和roll的惩罚力度
+        base_height_target = 0.33                              # 换urdf记得改!!!!
+        toe_height_target = 0.12                                # 换urdf记得改!!!! 0.08 0.10 0.12
+        pitch_roll_factor = [1.2, 1]                             # 调节pitch和roll的惩罚力度
         class scales( LeggedRobotCfg.rewards.scales ):     
             termination = -0.0
             tracking_lin_vel = 1.2
-            tracking_ang_vel = 0.5
-            lin_vel_z = -2
-            orientation = -1.5  # 增加权重
-            collision = -1.0
-            base_height = -0.20
-            # feet_collision_onstair = -0.2
-            foot_clearance = 0.15
-            feet_air_time = 0.2  # 移除奖励
-            move_feet = -2  # 移除惩罚
-            torques = -5e-4  # 增加权重
-            action_rate = -0.05  # 增加权重
-            stumble = -2
-            stand_still = -1
+            tracking_ang_vel = 0.6
+            lin_vel_z = -4
+            ang_vel_xy = -0.26
+            orientation = -1.5                                 # -0.2
+            collision = -0.9                                    # -0.1 -0.2 
+            base_height = -0.13                                 # -100, -80 -0.2 
+            feet_collision_onstair = -0.18                       # -0.1
+            foot_clearance = 0.15                              # -0.5 -1.0 -2.0 -1.0 -5.
+            foot_discrepancy = 0
+            feet_air_time = 1.5                                # 0.5 0.6 0.5 0.8 0.2 0.3 0.6 0.3
+            stand_still = -0.1
+            hip_pos_limits = -0.2
+            torques = -7e-4                                      # -1e-4(go1), -7e-4(effort比), -4e-4(质量比)
+            dof_acc = -2.5e-7                                        # -2.5e-7       smooth_scale
+            base_acc = -0.15
+            action_rate = -0.02                                 # -0.15  -0.1      smooth_scale
+            dof_vel = -2.5e-4
+            dof_pos_limits = -5
+            dof_vel_limits = -0.
+            torque_limits = -0.
+            move_feet = -5
+            stumble = -0.1                                     # -0.5, -0.3, -0.8 -0.2 -0.1 -1.0
             hip_pos = -0.05
-            smoothness = -0.01
-            # joint_power = -2e-5
+
 
     class commands(LeggedRobotCfg.commands):
         curriculum = False                                  # commands.curriculum与terrain.curriculum不能同时为True
